@@ -113,6 +113,7 @@ E **quelle sfruttate per il sito**, fino ad adesso:
 #### In Italia, e per regione
 
 Notiamo subito delle differenze regionali. 
+Il primo grafico mostra la media italiana in rosso, mentre le linee grigie si riferiscono ai valori delle diverse regioni. Come vediamo, alcune regioni sono nettamente sopra alla media in termini di % di persone con limitazioni gravi.
 
 ```{r share disabled people in italy, echo = FALSE}
 
