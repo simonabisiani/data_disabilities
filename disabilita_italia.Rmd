@@ -1,0 +1,110 @@
+---
+title: "Disabled_data"
+author: "Simona Bisiani"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries}
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(RColorBrewer)
+library(gghighlight)
+```
+
+
+## Disabled data
+
+Analysing ISTAT data on disabilities. Extracted from disabilitaincifre.it
+
+```{r share disabled people in italy, echo = FALSE}
+
+tbl <-
+     list.files(pattern = "*.xls")
+
+tbl <- lapply(tbl, read_excel)
+
+for (i in 1:length(tbl)){
+  name[i] <- first(colnames(tbl[[i]]))
+  names(tbl)[i] <- name[i]
+  names(tbl)[i] <- str_replace(name[i], ".*Anno", "")
+  column_names <- tbl[[1]][3,]
+  colnames(tbl[[i]]) <- column_names
+}
+
+share_persons_disabilites_09_19_regions <- map_dfr(tbl, bind_rows, .id = "id") %>% 
+  select(-3) %>% 
+  rename('regione' = ...1) %>% 
+  filter(!is.na(regione) & regione != "REGIONI") %>% 
+  mutate(id = gsub("\\.","",id),
+         id = as.Date(paste0("01-Jan", gsub(" ", "-", id)), format = "%d-%b-%Y"),
+         regione = as.factor(regione)) %>%
+   mutate(mean_all = mean(as.numeric(`Limitazioni gravi`))) %>% 
+   ungroup() %>%
+   group_by(regione) %>% 
+   mutate(mean = mean(as.numeric(`Limitazioni gravi`)),
+          diff = mean - mean_all)%>% 
+  ungroup() %>% 
+  mutate(regione = fct_reorder(regione, diff),
+         group = ifelse(regione == "Italia", 1, 0))
+
+nb.cols <- 21
+mycolors <- colorRampPalette(brewer.pal(8, "PuOr"))(nb.cols)
+
+# ITALIA 
+ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni gravi`), color = regione)) +
+   geom_line() +
+   geom_point(alpha = 0.4) +
+   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+   gghighlight(regione == "Italia") +
+   theme_minimal() +
+   ggtitle("Percentuale persone con limitazioni gravi \nin Italia, 2009-2019") +
+   labs(y = "% persone con limitazioni gravi", x = "anno") +
+   theme(legend.position = "top",
+         legend.title = element_text(size=8), 
+         legend.text=element_text(size=7),
+         aspect.ratio = 1/2.5)
+
+colors <- c('#040d60','#3e337c', '#675c98', '#8279ab',  '#b7b5d1', '#c5c5da',  '#f4f4f4', '#fdf0cc', '#fae1b8', '#f6d3a6', '#f1c495', '#ecb685', '#e6a876', '#e09968', '#d98b5c', '#d17d51', '#c96f48', '#c16140', '#b9523b',  '#a73336',  '#93003a')
+
+# REGIONI
+ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni gravi`), color = regione)) +
+   geom_line() +
+   geom_point(alpha = 0.4) +
+   scale_color_manual(values = colors, name = "Regione") + 
+   scale_x_date(date_breaks = "1 year", date_labels = "%Y") +
+   theme_minimal() +
+   labs(y = "% persone con limitazioni gravi", x = "anno") +
+   ggtitle("Percentuale persone con limitazioni gravi \nper regione, 2009-2019") +
+   theme(legend.position = "right",
+         legend.title = element_text(size=8, face = "bold"), 
+         legend.text=element_text(size=7))
+
+```
+
+# AGE and RIPARTIZIONE
+
+```{r}
+
+tbl <-
+     list.files(pattern = "*.xls")
+
+tbl <- lapply(tbl, read_excel)
+
+for (i in 1:length(tbl)){
+  name[i] <- first(colnames(tbl[[i]]))
+  names(tbl)[i] <- name[i]
+  names(tbl)[i] <- str_replace(name[i], ".*Anno", "")
+  column_names <- tbl[[1]][3,]
+  colnames(tbl[[i]]) <- column_names
+}
+
+
+```
+
