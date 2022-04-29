@@ -19,101 +19,28 @@ library(janitor)
 library(lubridate)
 library(RColorBrewer)
 library(gghighlight)
+library(rio)
 ```
 
+## Disabilità in cifre
+
 In questo documento analizzo i dati estratti da [disabilità in cifre](https://disabilitaincifre.istat.it/dawinciMD.jsp), il database ISTAT per i dati sulla disabilità.
+
+
+### Numero di persone con limitazioni gravi
+
+Tavole estratte da disabilitaincifre.it.
 
 Le **tavole analizzabili** sono le seguenti:
 
 1. a.1 Persone per gravità delle limitazioni nelle attività abitualmente svolte (valori assoluti in migliaia)
 2. a.2 Persone per gravità delle limitazioni nelle attività abitualmente svolte (valori percentuali)
-3. Ospiti adulti con disabilità o patologia psichiatrica dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
-4. Ospiti adulti con disabilità o patologia psichiatrica dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
-5. Ospiti anziani non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
-6. Ospiti anziani non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
-7. Ospiti con disabilità o non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
-8. Ospiti con disabilità o non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
-9. Ospiti minori con disabilità o disturbi mentali dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
-10. Ospiti minori con disabilità o disturbi mentali dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
-11. Persone per gravità delle limitazioni nelle attività abitualmente svolte e esami specialisti effettuati negli ultimi 12 mesi (valori percentuali)
-12. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricoveri ospedalieri negli ultimi tre mesi (valori percentuali)
-13. Persone per gravità delle limitazioni nelle attività abitualmente svolte e visite specialistiche negli ultimi 12 mesi (valori percentuali)
-14. Posti letto nei presidi residenziali socio-assistenziali e socio-sanitari per target di utenza prevalente (valori assoluti)
-15. Posti letto nei presidi residenziali socio-assistenziali e socio-sanitari per target di utenza prevalente (valori per centomila)
-16. Spesa dei Comuni per assistenza domiciliare (in migliaia di euro correnti) per area utenza (valori assoluti)
-17. Spesa dei Comuni per assistenza domiciliare per area utenza (valori medi per utente in euro correnti)
-18. Spesa dei Comuni per interventi e servizi sociali (in migliaia di euro correnti) per area utenza (valori assoluti)
-19. Spesa dei Comuni per interventi e servizi sociali per area utenza (valori medi per utente in euro correnti)
-20. Spesa dei Comuni per strutture residenziali (in migliaia di euro correnti) per area utenza (valori assoluti)
-21. Spesa dei Comuni per strutture residenziali per area utenza (valori medi per utente in euro correnti)
-22. Età media delle persone per gravità delle limitazioni nelle attività abitualmente svolte
-23. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ruolo familiare (valori percentuali)
-24. Persone per gravità delle limitazioni nelle attività abitualmente svolte e tipologia familiare (valori percentuali)
-25. Alunni con disabilità (valori assoluti)
-26. Alunni con disabilità (valori per 100 alunni con le stesse caratteristiche)
-27. Alunni con disabilità della scuola secondaria di II grado (valori assoluti)
-28. Alunni con disabilità della scuola secondaria di II grado (valori per 100 alunni con le stesse caratteristiche)
-29. Alunni con disabilità intellettiva (valori assoluti)
-30. Alunni con disabilità motoria (valori assoluti)
-31. Alunni con disabilità psicomotoria (valori assoluti)
-32. Alunni con disabilità uditiva (valori assoluti)
-33. Alunni con disabilità visiva (valori assoluti)
-34. Numero scuole per caratteristiche edificio scolastico (Valori percentuali)
-35. Numero scuole con alunni con disabilità per presenza postazioni informatiche adattate (Valori percentuali)
-36. Persone per gravità delle limitazioni nelle attività abitualmente svolte e titolo di studio (valori percentuali)
-37. Iscritti all'elenco unico provinciale ex L.68/99 al 31 dicembre (valori assoluti)
-38. Persone con disabilità avviate al lavoro al 31 dicembre (valori assoluti)
-39. Quota di riserva al 31 dicembre (valori assoluti)
-40. Tirocini avviati al 31 dicembre (valori assoluti)
-41. f.1 Persone per gravità delle limitazioni nelle attività abitualmente svolte e condizione professionale dichiarata (valori percentuali)
-42. f.2 Persone occupate per gravità delle limitazioni nelle attività abitualmente svolte e posizione nella professione dichiarata (valori percentuali)
-43. Persone per gravità delle limitazioni nella attività abitualmente svolte e stato di salute percepito (valori percentuali)
-44. Persone per gravità delle limitazioni nelle attività abitualmente svolte e presenza di almeno una malattia cronica grave (valori percentuali)
-45. Dimissioni ospedaliere di pazienti affetti da disturbi psichici (valori assoluti)
-46. Dimissioni ospedaliere di pazienti affetti da disturbi psichici (valori per centomila)
-47. Persone per gravità delle limitazioni nelle attività abitualmente svolte e livello di soddisfazione per le relazioni familiari (valori percentuali)
-48. Persone per gravità delle limitazioni nelle attività abitualmente svolte e soddisfazione per il tempo libero (valori percentuali)
-49. Persone per gravità delle limitazioni nelle attività abitualmente svolte e soddisfazione per le relazioni amicali (valori percentuali)
-50. Persone per gravità delle limitazioni nelle attività abitualmente svolte e frequenza della pratica religiosa (valori percentuali)
-51. Persone per gravità delle limitazioni nelle attività abitualmente svolte e partecipazione culturale (valori percentuali)
-52. Persone per gravità delle limitazioni nelle attività abitualmente svolte e partecipazione sociale (valori percentuali)
-53. Persone per gravità delle limitazioni nelle attività abitualmente svolte e pratica sportiva (valori percentuali)
-54. Persone per gravità delle limitazioni nelle attività abitualmente svolte e aggiornamento sulla politica italiana (valori percentuali)
-55. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ascolto della radio (valori percentuali)
-56. Persone per gravità delle limitazioni nelle attività abitualmente svolte e uso del pc (valori percentuali)
-57. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo della tv (valori percentuali)
-58. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo di internet (valori percentuali)
-59. Persone per gravità delle limitazioni nelle attività abitualmente svolte e possesso del bancomat (valori percentuali)
-60. Persone per gravità delle limitazioni nelle attività abitualmente svolte e possesso della carta di credito (valori percentuali)
-61. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso agli uffici comunali (valori percentuali)
-62. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso agli uffici postali (valori percentuali)
-63. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso alla ASL (valori percentuali)
-64. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso alla banca (valori percentuali)
-65. Persone per gravità delle limitazioni nelle attività abitualmente svolte e uso automobile come conducente (valori percentuali)
-66. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo del treno (valori percentuali)
-67. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo trasporto pubblico extraurbano (valori percentuali)
-68. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo trasporto pubblico urbano (valori percentuali)
-69. Infortuni sul lavoro indennizzati per inabilità permanente (valori assoluti)
-70. Malattie professionali indennizzate per inabilità permanente (valori assoluti)
-71. Persone con inabilità permanente titolari di rendita Inail (valori assoluti)
-72. Persone con inabilità permanente titolari di rendita Inail occupate nel settore dell'Industria e del terziario (valori assoluti)
-73. Importo lordo annuale dei redditi pensionistici per le persone con disabilità (valori per mille)
-74. Importo lordo annuale dei redditi pensionistici per le persone con disabilità (valori medi)
-75. Numero dei beneficiari di pensioni per le persone con disabilità
-76. Prestazioni della protezione sociale per la disabilità per tipo di beneficio (milioni di euro)
 
+##### In Italia, e per regione
 
-E **quelle sfruttate per il sito**, fino ad adesso:
-
-2. a.2 Persone per gravità delle limitazioni nelle attività abitualmente svolte (valori percentuali)
-
-
-## Numero di persone con limitazioni gravi
-
-#### In Italia, e per regione
-
-Notiamo subito delle differenze regionali. 
 Il primo grafico mostra la media italiana in rosso, mentre le linee grigie si riferiscono ai valori delle diverse regioni. Come vediamo, alcune regioni sono nettamente sopra alla media in termini di % di persone con limitazioni gravi.
+
+Il secondo grafico identifica le regioni sopra e quelle sotto la media nazionale.
 
 ```{r share disabled people in italy, echo = FALSE}
 
@@ -152,7 +79,7 @@ share_persons_disabilites_09_19_regions <- map_dfr(tbl, bind_rows, .id = "id") %
 nb.cols <- 21
 mycolors <- colorRampPalette(brewer.pal(8, "PuOr"))(nb.cols)
 
-# ITALIA 
+## ITALIA 
 ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni gravi`), color = regione)) +
    geom_line() +
    geom_point(alpha = 0.4) +
@@ -168,7 +95,7 @@ ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni 
 
 colors <- c('#040d60','#3e337c', '#675c98', '#8279ab',  '#b7b5d1', '#c5c5da',  '#f4f4f4', '#fdf0cc', '#fae1b8', '#f6d3a6', '#f1c495', '#ecb685', '#e6a876', '#e09968', '#d98b5c', '#d17d51', '#c96f48', '#c16140', '#b9523b',  '#a73336',  '#93003a')
 
-# REGIONI
+## REGIONI
 ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni gravi`), color = regione)) +
    geom_line() +
    geom_point(alpha = 0.4) +
@@ -183,10 +110,15 @@ ggplot(share_persons_disabilites_09_19_regions, aes(id, as.numeric(`Limitazioni 
 
 ```
 
-#### Età e ripartizione geografica
+##### Età e ripartizione geografica
+
+Premessa: ci sono voluti 85 clicks e 20 tabelle, per estrarre questi dati. Se volessi ulteriormente suddividere i dati per regione, si tratterebbe di effettivamente dover fare quanto fatto x4. (Questo per ribadire che un bulk download sarebbe una funzione utile per navigare i dati)
+
 
 Dal plot si notano un paio di cose: 
-1. la diseguaglianza tra zone in Italia (centro, isole, ecc) si fa sentire soprattutto negli anziani;
+
+1. la diseguaglianza tra zone in Italia (centro, isole, ecc) si fa sentire soprattutto negli anziani
+
 2. il numero di disabili sembrava essere in calo nell'ultimo decennio, irrispettivo a classi di età, ma il trend si rovescia negli ultimi anni
 
 ```{r}
@@ -240,4 +172,365 @@ ggplot(aes(x = as.numeric(anno), y = limitazioni_gravi, color = id)) +
 
 
 ```
+##### Genere e ripartizione geografica
 
+Problema riscontrato: non riesco a generare tabelle dove combino età e genere
+
+Dal plot si nota: 
+
+1. la diseguaglianza regionale è simile tra uomini e donne. 
+
+2. le persone con disabilità sono prevalentemente donne (media circa del 4.5% di uomini in Italia ha una disabilità, contro il 6% circa delle donne)
+
+3. il numero di donne nelle Isole con disabilità è in crescita dal 2012. In 7 anni, è salito del 2% circa.
+
+```{r}
+path <- "/Users/simona/Documents/GitHub/data_disabilities/number_disabled_gender/"
+tbl_ <- list.files(path = path, pattern = "*.xls")
+tbl_ <- paste(path, tbl_)
+tbl_ <- str_replace(tbl_, " ", "")
+tbl <- lapply(tbl_, read_excel, sheet = "pagina 1")
+
+#this needs to be fixed (to get the right file name (the year), I have to run the first line of code inside the loop,
+#but first I have to remove [i] in name[i], then I rerun the loop as it is and the output is as I want it)
+for (i in 1:length(tbl)){
+  name <- first(colnames(tbl[[i]]))
+  name[i] <- first(colnames(tbl[[i]]))
+  names(tbl)[i] <- name[i]
+  names(tbl)[i] <- str_replace(name[i], ".*Ripartizione ", "")
+  column_names <- tbl[[1]][3,]
+  colnames(tbl[[i]]) <- column_names
+  tbl[[i]][,8] <- tbl[[i]][1,1]
+}
+
+tbl2 <- lapply(tbl_, read_excel, sheet = "pagina 2")
+
+#this needs to be fixed (to get the right file name (the year), I have to run the first line of code inside the loop,
+#but first I have to remove [i] in name[i], then I rerun the loop as it is and the output is as I want it)
+for (i in 1:length(tbl2)){
+  name <- first(colnames(tbl2[[i]]))
+  name[i] <- first(colnames(tbl2[[i]]))
+  names(tbl2)[i] <- name[i]
+  names(tbl2)[i] <- str_replace(name[i], ".*Ripartizione ", "")
+  column_names <- tbl2[[1]][3,]
+  colnames(tbl2[[i]]) <- column_names
+  tbl2[[i]][,8] <- tbl2[[i]][1,1]
+}
+
+gender_ripartitions <- append(tbl, tbl2)
+
+share_persons_disabilites_09_19_ripartitions_gender <- map_dfr(gender_ripartitions, bind_rows, .id = "id") %>% 
+  select(-3) %>% 
+  na.omit() %>% 
+  rename(gender = ...8) %>% 
+  mutate(gender = str_replace(gender, ".*= ", ""),
+         gender = str_replace(gender, "\\.", ""),
+         id = str_replace(id, " .*", "")) %>% 
+  rename('anno' = ...1)
+
+share_persons_disabilites_09_19_ripartitions_gender %>% 
+  group_by(gender, anno) %>% 
+  mutate(limitazioni_gravi = as.numeric(`Limitazioni gravi`),
+    mean_all = mean(limitazioni_gravi),
+    diff = limitazioni_gravi - mean_all,
+    id = factor(id)) %>% 
+  ungroup() %>% 
+  mutate(id = fct_reorder(id, diff)) %>% 
+ggplot(aes(x = as.numeric(anno), y = limitazioni_gravi, color = id)) +
+  geom_line() +
+  geom_point() +
+  ggtitle("Percentuale persone con limitazioni gravi \nper genere e ripartizione geografica, 2009-2019") +
+  labs(x = "anno", y = "% persone con limitazioni gravi") +
+  geom_line(aes(y = mean_all), color = "black") +
+  facet_grid(. ~ gender) +
+  theme_minimal() +
+  scale_x_continuous(breaks = seq(2009, 2019, 2)) +
+  scale_y_continuous(breaks = seq(0,30,0.5)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_color_manual(values = c('#b7b5d1', '#c5c5da',  '#f4f4f4', '#fdf0cc', '#fae1b8', '#f6d3a6'), name = "Ripartizione geografica")
+
+
+```
+
+### Assistenza sanitaria e sociale
+
+3. Ospiti adulti con disabilità o patologia psichiatrica dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
+4. Ospiti adulti con disabilità o patologia psichiatrica dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
+5. Ospiti anziani non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
+6. Ospiti anziani non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
+7. Ospiti con disabilità o non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
+8. Ospiti con disabilità o non autosufficienti dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
+9. Ospiti minori con disabilità o disturbi mentali dei presidi residenziali socio-assistenziali e socio-sanitari (valori assoluti)
+10. Ospiti minori con disabilità o disturbi mentali dei presidi residenziali socio-assistenziali e socio-sanitari (valori per centomila)
+11. Persone per gravità delle limitazioni nelle attività abitualmente svolte e esami specialisti effettuati negli ultimi 12 mesi (valori percentuali)
+12. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricoveri ospedalieri negli ultimi tre mesi (valori percentuali)
+13. Persone per gravità delle limitazioni nelle attività abitualmente svolte e visite specialistiche negli ultimi 12 mesi (valori percentuali)
+14. Posti letto nei presidi residenziali socio-assistenziali e socio-sanitari per target di utenza prevalente (valori assoluti)
+15. Posti letto nei presidi residenziali socio-assistenziali e socio-sanitari per target di utenza prevalente (valori per centomila)
+16. Spesa dei Comuni per assistenza domiciliare (in migliaia di euro correnti) per area utenza (valori assoluti)
+17. Spesa dei Comuni per assistenza domiciliare per area utenza (valori medi per utente in euro correnti)
+18. Spesa dei Comuni per interventi e servizi sociali (in migliaia di euro correnti) per area utenza (valori assoluti)
+19. Spesa dei Comuni per interventi e servizi sociali per area utenza (valori medi per utente in euro correnti)
+20. Spesa dei Comuni per strutture residenziali (in migliaia di euro correnti) per area utenza (valori assoluti)
+21. Spesa dei Comuni per strutture residenziali per area utenza (valori medi per utente in euro correnti)
+
+##### Ospiti dei presidi residenziali
+
+```{r}
+
+```
+
+##### Ricorso ai servizi sanitari
+
+```{r}
+
+```
+
+##### Posti letto in struttue residenziali
+
+```{r}
+
+```
+
+##### Ospiti dei presidi residenziali
+
+```{r}
+
+```
+
+##### Spesa dei Comuni
+
+```{r}
+
+```
+
+### Famiglie
+
+22. Età media delle persone per gravità delle limitazioni nelle attività abitualmente svolte
+23. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ruolo familiare (valori percentuali)
+24. Persone per gravità delle limitazioni nelle attività abitualmente svolte e tipologia familiare (valori percentuali)
+
+##### Caratteristiche del nucleo
+
+```{r}
+
+```
+
+### Istruzione e integrazione scolastica
+
+25. Alunni con disabilità (valori assoluti)
+26. Alunni con disabilità (valori per 100 alunni con le stesse caratteristiche)
+27. Alunni con disabilità della scuola secondaria di II grado (valori assoluti)
+28. Alunni con disabilità della scuola secondaria di II grado (valori per 100 alunni con le stesse caratteristiche)
+29. Alunni con disabilità intellettiva (valori assoluti)
+30. Alunni con disabilità motoria (valori assoluti)
+31. Alunni con disabilità psicomotoria (valori assoluti)
+32. Alunni con disabilità uditiva (valori assoluti)
+33. Alunni con disabilità visiva (valori assoluti)
+34. Numero scuole per caratteristiche edificio scolastico (Valori percentuali)
+35. Numero scuole con alunni con disabilità per presenza postazioni informatiche adattate (Valori percentuali)
+
+##### Alunni con disabilità
+
+```{r}
+
+```
+
+##### Ambiente scolastico
+
+```{r}
+
+```
+
+##### Livello di istruzione
+
+```{r}
+
+```
+
+### Lavoro e occupazione
+
+36. Persone per gravità delle limitazioni nelle attività abitualmente svolte e titolo di studio (valori percentuali)
+37. Iscritti all'elenco unico provinciale ex L.68/99 al 31 dicembre (valori assoluti)
+38. Persone con disabilità avviate al lavoro al 31 dicembre (valori assoluti)
+39. Quota di riserva al 31 dicembre (valori assoluti)
+40. Tirocini avviati al 31 dicembre (valori assoluti)
+41. f.1 Persone per gravità delle limitazioni nelle attività abitualmente svolte e condizione professionale dichiarata (valori percentuali)
+42. f.2 Persone occupate per gravità delle limitazioni nelle attività abitualmente svolte e posizione nella professione dichiarata (valori percentuali)
+
+##### Collocamento mirato
+
+```{r}
+
+```
+
+##### Condizione professionale
+
+```{r}
+
+```
+
+### Salute
+
+43. Persone per gravità delle limitazioni nella attività abitualmente svolte e stato di salute percepito (valori percentuali)
+44. Persone per gravità delle limitazioni nelle attività abitualmente svolte e presenza di almeno una malattia cronica grave (valori percentuali)
+45. Dimissioni ospedaliere di pazienti affetti da disturbi psichici (valori assoluti)
+46. Dimissioni ospedaliere di pazienti affetti da disturbi psichici (valori per centomila)
+
+##### Condizioni di salute
+
+```{r}
+
+```
+
+##### Salute mentale
+
+```{r}
+
+```
+
+### Vita sociale
+
+47. Persone per gravità delle limitazioni nelle attività abitualmente svolte e livello di soddisfazione per le relazioni familiari (valori percentuali)
+48. Persone per gravità delle limitazioni nelle attività abitualmente svolte e soddisfazione per il tempo libero (valori percentuali)
+49. Persone per gravità delle limitazioni nelle attività abitualmente svolte e soddisfazione per le relazioni amicali (valori percentuali)
+50. Persone per gravità delle limitazioni nelle attività abitualmente svolte e frequenza della pratica religiosa (valori percentuali)
+51. Persone per gravità delle limitazioni nelle attività abitualmente svolte e partecipazione culturale (valori percentuali)
+52. Persone per gravità delle limitazioni nelle attività abitualmente svolte e partecipazione sociale (valori percentuali)
+53. Persone per gravità delle limitazioni nelle attività abitualmente svolte e pratica sportiva (valori percentuali)
+54. Persone per gravità delle limitazioni nelle attività abitualmente svolte e aggiornamento sulla politica italiana (valori percentuali)
+55. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ascolto della radio (valori percentuali)
+56. Persone per gravità delle limitazioni nelle attività abitualmente svolte e uso del pc (valori percentuali)
+57. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo della tv (valori percentuali)
+58. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo di internet (valori percentuali)
+59. Persone per gravità delle limitazioni nelle attività abitualmente svolte e possesso del bancomat (valori percentuali)
+60. Persone per gravità delle limitazioni nelle attività abitualmente svolte e possesso della carta di credito (valori percentuali)
+61. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso agli uffici comunali (valori percentuali)
+62. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso agli uffici postali (valori percentuali)
+63. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso alla ASL (valori percentuali)
+64. Persone per gravità delle limitazioni nelle attività abitualmente svolte e ricorso alla banca (valori percentuali)
+
+##### Livello di soddisfazione
+
+```{r}
+
+```
+
+##### Partecipazione sociale
+
+```{r}
+
+```
+
+##### Tempo libero
+
+```{r}
+
+```
+
+##### Uso dei servizi
+
+```{r}
+
+```
+
+### Trasporto
+
+65. Persone per gravità delle limitazioni nelle attività abitualmente svolte e uso automobile come conducente (valori percentuali)
+66. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo del treno (valori percentuali)
+67. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo trasporto pubblico extraurbano (valori percentuali)
+68. Persone per gravità delle limitazioni nelle attività abitualmente svolte e utilizzo trasporto pubblico urbano (valori percentuali)
+
+##### Privato
+
+```{r}
+
+```
+
+##### Pubblico
+
+```{r}
+
+```
+
+### Infortuni sul lavoro
+
+69. Infortuni sul lavoro indennizzati per inabilità permanente (valori assoluti)
+70. Malattie professionali indennizzate per inabilità permanente (valori assoluti)
+71. Persone con inabilità permanente titolari di rendita Inail (valori assoluti)
+72. Persone con inabilità permanente titolari di rendita Inail occupate nel settore dell'Industria e del terziario (valori assoluti)
+
+
+##### Incidenti sul lavoro
+
+```{r}
+
+```
+
+##### Malattie professionali
+
+```{r}
+
+```
+
+##### Titolari di rendita INAIL
+
+```{r}
+
+```
+
+### Protezione sociale
+
+73. Importo lordo annuale dei redditi pensionistici per le persone con disabilità (valori per mille)
+74. Importo lordo annuale dei redditi pensionistici per le persone con disabilità (valori medi)
+75. Numero dei beneficiari di pensioni per le persone con disabilità
+76. Prestazioni della protezione sociale per la disabilità per tipo di beneficio (milioni di euro)
+
+##### Beneficiari di pensioni di disabilità
+
+```{r}
+
+```
+
+##### Spesa Paesi Europei per la Protezione Sociale - funzione disabilità
+
+```{r}
+
+```
+
+## I.STAT
+
+### Sicurezza delle donne
+
+##### Numero di donne vittime di violenza con disabilità
+
+```{r}
+path <- "/Users/simona/Documents/GitHub/data_disabilities/gender_violence/"
+tbl <- list.files(path = path, pattern = "*.csv")
+tbl <- paste(path, tbl)
+tbl <- str_replace(tbl, " ", "")
+tbl <- lapply(tbl, read_delim, 
+    delim = ";", escape_double = FALSE, locale = locale(), 
+    trim_ws = TRUE, skip = 1)
+
+#this needs to be fixed (to get the right file name (the year), I have to run the first line of code inside the loop,
+#but first I have to remove [i] in name[i], then I rerun the loop as it is and the output is as I want it)
+for (i in 1:length(tbl)){
+  names(tbl)[i] <- tbl[[i]][1,3]
+#  names(tbl)[i] <- name[i]
+  #names(tbl)[i] <- str_replace(name[i], ".*Ripartizione ", "")
+  # column_names <- tbl[[1]][3,]
+  # colnames(tbl[[i]]) <- column_names
+  # tbl[[i]][,8] <- tbl[[i]][1,1]
+}
+
+share_persons_disabilites_09_19_ripartitions_age <- map_dfr(tbl, bind_rows, .id = "id") %>% 
+  select(-3) %>% 
+  na.omit() %>% 
+  rename(age = ...8) %>% 
+  mutate(age = str_replace(age, ".*= ", ""),
+         age = str_replace(age, " .*", ""),
+         id = str_replace(id, " .*", "")) %>% 
+  rename('anno' = ...1)
+
+```
